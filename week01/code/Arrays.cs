@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 public static class Arrays
 {
     /// <summary>
@@ -6,14 +8,44 @@ public static class Arrays
     /// integer greater than 0.
     /// </summary>
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static double[] MultiplesOf(double number, int length)
+
     {
         // TODO Problem 1 Start
+    //Create an array of size length to store the multiples
+    double[] multiples = new double[length];
+    //Loop from 0 to length - 1
+    for (int i = 0; i < length; i++)
+        {
+            //Calculate each multiple inside the loop:
+            //multiple = number* (i + 1)
+            multiples[i] = number * (i + 1);
+            
+        }
+    //(use i + 1 because the first multiple is 1 * number)
+    //Return the array 
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        return multiples; // replace this return statement with your own
     }
 
     /// <summary>
@@ -29,5 +61,23 @@ public static class Arrays
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
+        //Determine how many elements will move to the front
+        //Rotation right by 'amount' means the last elements should appear at the beginning of the list .
+        int cutIndex = data.Count - amount;
+
+        // Get the last elements and move them to the front
+        List<int> rightpart = data.GetRange(cutIndex, amount);
+
+
+        //This will get the remaining elements at the front of the list 
+        List<int> leftpart = data.GetRange(0, cutIndex);
+
+        //Clears the original list 
+        data.Clear();
+        //Add the right part 
+        data.AddRange(rightpart);
+
+        //Add the left part 
+        data.AddRange(leftpart);
     }
 }
