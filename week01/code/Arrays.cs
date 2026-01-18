@@ -9,22 +9,6 @@ public static class Arrays
     /// </summary>
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public static double[] MultiplesOf(double number, int length)
 
     {
