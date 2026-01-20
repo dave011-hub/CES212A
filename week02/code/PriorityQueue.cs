@@ -33,7 +33,7 @@ public class PriorityQueue
     /// <exception cref="InvalidOperationException">If the queue is empty.</exception>
     public string Dequeue()
     {
-        if (_queue.Count == 0) // Verify the queue is not empty
+        if (_queue.Count == 0)
         {
             throw new InvalidOperationException("The queue is empty.");
         }
