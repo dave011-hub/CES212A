@@ -2,17 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-//
-// ------------------------------------------------------------
-// PERSON CLASS
-// ------------------------------------------------------------
-// Represents a person in the queue.
-// - Name: the person's name
-// - Turns: number of turns they have left
-//     • Turns > 0  → finite turns
-//     • Turns <= 0 → infinite turns (never removed)
-// ------------------------------------------------------------
-//
+/// <summary>
+/// Represents a person in the queue with a name and number of turns.
+/// Turns <= 0 are considered infinite.
+/// </summary>
 public class Person
 {
     public string Name { get; }
@@ -25,73 +18,54 @@ public class Person
     }
 }
 
-//
-// ------------------------------------------------------------
-// TAKING TURNS QUEUE
-// ------------------------------------------------------------
-// Requirements (from assignment):
-//
-// 1. AddPerson(name, turns)
-//      • Adds a new person to the BACK of the queue (FIFO).
-//
-// 2. GetNextPerson()
-//      • Removes the next person from the FRONT of the queue.
-//      • Returns that person.
-//      • If the person has turns left, they are re‑added to the BACK.
-//      • If the person has infinite turns (turns <= 0), they are ALWAYS re‑added.
-//      • If the person has no turns left (turns == 0 after decrement), they are NOT re‑added.
-//      • If the queue is empty, throw InvalidOperationException("No one in the queue.")
-//
-// 3. Length property returns number of people currently in the queue.
-//
-// ------------------------------------------------------------
-// This implementation satisfies ALL test cases exactly.
-// ------------------------------------------------------------
-//
+/// <summary>
+/// Maintains a circular queue of people. When people are added, they go to the
+/// back of the queue. When GetNextPerson is called, the next person is returned
+/// and possibly re-added depending on their remaining turns.
+/// </summary>
 public class TakingTurnsQueue
 {
     private readonly Queue<Person> _people = new();
 
     /// <summary>
-    /// Number of people currently in the queue.
+    /// Gets the current number of people in the queue
     /// </summary>
     public int Length => _people.Count;
 
     /// <summary>
-    /// Adds a new person to the queue.
+    /// Add new people to the queue with a name and number of turns
     /// </summary>
+    /// <param name="name">Name of the person</param>
+    /// <param name="turns">Number of turns remaining (0 or less = infinite)</param>
     public void AddPerson(string name, int turns)
     {
         _people.Enqueue(new Person(name, turns));
     }
 
     /// <summary>
-    /// Removes the next person from the queue and returns them.
-    /// Re-enqueues them depending on their turn count.
+    /// Get the next person in the queue and return them.
+    /// The person is re-added if they still have turns remaining or
+    /// if they have infinite turns.
+    /// Throws an exception if the queue is empty.
     /// </summary>
     public Person GetNextPerson()
     {
         if (_people.Count == 0)
         {
-            // Required exact message for tests
             throw new InvalidOperationException("No one in the queue.");
         }
 
-        // Remove the next person
         Person person = _people.Dequeue();
 
-        // Infinite turns (0 or negative)
         if (person.Turns <= 0)
         {
-            // Re-enqueue without modifying Turns
+            // Infinite turns
             _people.Enqueue(person);
         }
         else
         {
-            // Finite turns: decrement
             person.Turns--;
 
-            // If they still have turns left, re-enqueue
             if (person.Turns > 0)
             {
                 _people.Enqueue(person);
@@ -102,12 +76,10 @@ public class TakingTurnsQueue
     }
 
     /// <summary>
-    /// Returns a readable list of names in the queue.
+    /// String representation of the queue
     /// </summary>
     public override string ToString()
     {
         return string.Join(", ", _people.Select(p => p.Name));
     }
 }
-
-
